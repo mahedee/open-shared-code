@@ -11,7 +11,7 @@ namespace Application.Commands.CatalogItems
 {
     public class CreateCatalogItemCommand : INotification
     {
-        public CreateCatalogItemCommand(string name, string description, decimal price, int availableStock, int restockThreshold, 
+        public CreateCatalogItemCommand(string name, string description, double price, int availableStock, int restockThreshold, 
             int maxStockThreshold, bool onReorder)
         {
             //Id = id;
@@ -30,7 +30,7 @@ namespace Application.Commands.CatalogItems
 
         public string Description { get; private set; }
 
-        public decimal Price { get; private set; }
+        public double Price { get; private set; }
 
         // Quantity in stock
         public int AvailableStock { get; private set; }
@@ -50,13 +50,13 @@ namespace Application.Commands.CatalogItems
     public class CreateCatalogItemCommandHandler : INotificationHandler<CreateCatalogItemCommand>
     {
         private readonly IAggregateRepository<CatalogItem, int> _aggregateRepository;
-        private readonly ICatalogItemAggregateRepository _catalogItemAggregateRepository;
+        private readonly ICatalogItemRepository _catalogItemRepository;
 
         public CreateCatalogItemCommandHandler(IAggregateRepository<CatalogItem, int> aggregateRepository, 
-            ICatalogItemAggregateRepository catalogItemAggregateRepository)
+            ICatalogItemRepository catalogItemRepository)
         {
             _aggregateRepository = aggregateRepository;
-            _catalogItemAggregateRepository = catalogItemAggregateRepository;
+            _catalogItemRepository = catalogItemRepository;
         }
 
         public async Task Handle(CreateCatalogItemCommand notification, CancellationToken cancellationToken)
@@ -71,6 +71,8 @@ namespace Application.Commands.CatalogItems
 
             // Save data into database
             //await _catalogItemAggregateRepository.SaveAsync(catalogItem.Events.FirstOrDefault());
+
+            await _catalogItemRepository.AddAsync(catalogItem);
 
             // Dispatch events to any event/service bus to do next actions
             // We can also register EventStore db Subscription to receive Event Notification

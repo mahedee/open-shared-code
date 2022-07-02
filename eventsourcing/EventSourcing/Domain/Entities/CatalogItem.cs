@@ -15,7 +15,7 @@ namespace Domain.Entities
 
         }
 
-        public CatalogItem(int id, string name, string description, decimal price, int availableStock, 
+        public CatalogItem(int id, string name, string description, double price, int availableStock, 
             int restockThreshold, int maxStockThreshold, bool onReorder) : base(id)
         {
             Id = id;
@@ -55,7 +55,7 @@ namespace Domain.Entities
 
         public string Description { get; set; }
 
-        public decimal Price { get; set; }
+        public double Price { get; set; }
 
         // Quantity in stock
         public int AvailableStock { get; set; }
@@ -71,13 +71,13 @@ namespace Domain.Entities
         /// </summary>
         public bool OnReorder { get; set; }
 
-        public static CatalogItem Create(int id, string name, string description, decimal price, int availableStock, 
+        public static CatalogItem Create(int id, string name, string description, double price, int availableStock, 
             int restockThreshold, int maxStockThreshold, bool onReorder)
         {
             return new CatalogItem(id, name, description, price, availableStock, restockThreshold, maxStockThreshold, onReorder);
         }
 
-        public void Update(int id, string name, string description, decimal price, int availableStock,
+        public void Update(int id, string name, string description, double price, int availableStock,
          int restockThreshold, int maxStockThreshold, bool onReorder)
         {
             Id = id;

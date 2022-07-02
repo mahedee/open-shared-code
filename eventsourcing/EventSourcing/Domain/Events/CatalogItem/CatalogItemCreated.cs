@@ -31,7 +31,7 @@ namespace Domain.Events.CatalogItem
         public string Name { get; set; }
 
         public string Description { get; set; }
-        public decimal Price { get; set; }
+        public double Price { get; set; }
         // Quantity in stock
         public int AvailableStock { get; set; }
         // Available stock at which we should reorder

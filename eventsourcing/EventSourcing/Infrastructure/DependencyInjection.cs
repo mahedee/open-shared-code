@@ -25,14 +25,15 @@ namespace Infrastructure
             services.AddDbContext<ApplicationDbContext>(options =>
             {
                 options.UseSqlServer(
-                    configuration.GetConnectionString("DBCS"),
+                    configuration.GetConnectionString("DefaultConnection"),
                     sqlServerOptionsAction: sqlOptions =>
                     {
                     });
             });
 
             // Add event repository in pipeline
-            services.AddScoped<ICatalogItemAggregateRepository, CatalogItemAggregateRepository>();
+            services.AddScoped<ICatalogItemAggregateRepository_old, CatalogItemAggregateRepository_old>();
+            services.AddScoped<ICatalogItemRepository, CatalogItemRepository>();
             services.AddEventsRepository<CatalogItem, int>();
 
             return services;
