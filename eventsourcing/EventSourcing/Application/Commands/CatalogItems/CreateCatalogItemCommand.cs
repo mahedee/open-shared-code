@@ -1,0 +1,79 @@
+﻿using Application.Common.Interfaces;
+using Domain.Entities;
+using MediatR;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace Application.Commands.CatalogItems
+{
+    public class CreateCatalogItemCommand : INotification
+    {
+        public CreateCatalogItemCommand(string name, string description, decimal price, int availableStock, int restockThreshold, 
+            int maxStockThreshold, bool onReorder)
+        {
+            //Id = id;
+            Name = name;
+            Description = description;
+            Price = price;
+            AvailableStock = availableStock;
+            RestockThreshold = restockThreshold;
+            MaxStockThreshold = maxStockThreshold;
+            OnReorder = onReorder;
+        }
+
+        public int Id { get; private set; }
+
+        public string Name { get; private set; }
+
+        public string Description { get; private set; }
+
+        public decimal Price { get; private set; }
+
+        // Quantity in stock
+        public int AvailableStock { get; private set; }
+
+        // Available stock at which we should reorder
+        public int RestockThreshold { get; private set; }
+
+        // Maximum number of units that can be in-stock at any time (due to physicial/logistical constraints in warehouses)
+        public int MaxStockThreshold { get; private set; }
+
+        /// <summary>
+        /// True if item is on reorder
+        /// </summary>
+        public bool OnReorder { get; private set; }
+    }
+
+    public class CreateCatalogItemCommandHandler : INotificationHandler<CreateCatalogItemCommand>
+    {
+        private readonly IAggregateRepository<CatalogItem, int> _aggregateRepository;
+        private readonly ICatalogItemAggregateRepository _catalogItemAggregateRepository;
+
+        public CreateCatalogItemCommandHandler(IAggregateRepository<CatalogItem, int> aggregateRepository, 
+            ICatalogItemAggregateRepository catalogItemAggregateRepository)
+        {
+            _aggregateRepository = aggregateRepository;
+            _catalogItemAggregateRepository = catalogItemAggregateRepository;
+        }
+
+        public async Task Handle(CreateCatalogItemCommand notification, CancellationToken cancellationToken)
+        {
+
+    
+
+            // Insert event into eventstore db
+            var catalogItem = CatalogItem.Create(notification.Id, notification.Name, notification.Description, notification.Price, notification.AvailableStock,
+                notification.RestockThreshold, notification.MaxStockThreshold, notification.OnReorder);
+            await _aggregateRepository.AppendAsync(catalogItem);
+
+            // Save data into database
+            //await _catalogItemAggregateRepository.SaveAsync(catalogItem.Events.FirstOrDefault());
+
+            // Dispatch events to any event/service bus to do next actions
+            // We can also register EventStore db Subscription to receive Event Notification
+        }
+    }
+}
