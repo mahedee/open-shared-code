@@ -1,6 +1,7 @@
 // rafce short cut for functional component
 
 import React, { useEffect, useState } from "react";
+import { getData } from "../services/AccessAPI";
 
 function Issues() {
   // set states
@@ -11,6 +12,18 @@ function Issues() {
     //Console.log("Issues: useEffect");
     console.log("Issues: useEffect");
   }, []);
+
+  function getAllIssues() {
+    getData("api/Issues").then((result) => {
+      let responseJson = result;
+      if (responseJson) {
+        setIssueList({
+          issues: responseJson,
+          //loading: false,
+        });
+      }
+    });
+  }
 
   function renderAllIssues() {
     //console.log("All issues");
