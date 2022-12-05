@@ -19,15 +19,15 @@ namespace SingnalR.API.Db
                             Title = "Prepare scope statement",
                             Description = "Scope statement preparation",
                             CreatedBy = "Mahedee",
-                            AssignedTo = "Tahiya"
+                            AssignedTo = "Maidul"
                         },
                         new Issue
                         {
                             Code = "T02",
                             Title = "Prepare project management plan",
                             Description = "Project management plan",
-                            CreatedBy = "Mahedee",
-                            AssignedTo = "Humaira"
+                            CreatedBy = "Maidul",
+                            AssignedTo = "Mahedee"
                         });
                     context.SaveChanges();
                 }
