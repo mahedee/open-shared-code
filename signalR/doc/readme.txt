@@ -6,3 +6,8 @@ https://medium.com/swlh/creating-a-simple-real-time-chat-with-net-core-reactjs-a
 https://learn.microsoft.com/en-us/aspnet/core/tutorials/signalr-typescript-webpack?view=aspnetcore-6.0&tabs=visual-studio
 
 https://github.com/alopes2/Medium-Chatty
+
+Ref: Auth service, interceptor
+Use axios insted
+
+npm install axios
