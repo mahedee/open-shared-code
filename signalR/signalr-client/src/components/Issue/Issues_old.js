@@ -1,9 +1,9 @@
 // rafce short cut for functional component
 
 import React, { useEffect, useState } from "react";
-import { getAllIssues } from "../../services/IssueServices";
+import { getData } from "../../services/AccessAPI";
 
-function Issues() {
+function Issues_Old() {
   // set states
   const [issueList, setIssueList] = useState({
     issues: [],
@@ -13,29 +13,49 @@ function Issues() {
 
   //useEffect() is to be used for side-effects executed in the render cycle
   useEffect(() => {
+    //Console.log("Issues: useEffect");
+    console.log("Issues: useEffect");
+
+    // set all issues
+    //var allIssues = getAllIssues();
+
     getAllIssues().then((response) => {
-      console.log(response);
-      setIssueList({ issues: response.data, loading: false, error: "" });
+      //console.log(response);
+      setIssueList({ issues: response, loading: false, error: "" });
     });
 
-    //console.log("All issues for use effect: ");
-    //console.log(issueList);
+    console.log("All issues for use effect: ");
+    console.log(issueList);
     //setIssueList(allIssues);
   }, []);
 
-  // function getAllIssues() {
-  //   //const response = getData("api/Issues");
-  //   //return response;
-
-  //   try {
-  //     const response = axios.get(BASE_URL + `api/Issues`);
-  //     console.log("After axios");
-  //     //console.log(response);
-  //     return response;
-  //   } catch (error) {
-  //     throw error;
-  //   }
-  // }
+  function getAllIssues() {
+    const response = getData("api/Issues");
+    return response;
+    // getData("api/Issues").then((result) => {
+    //   console.log(result);
+    // });
+    //var outputResult;
+    //try {
+    //var outputResult = await getData("api/Issues");
+    // } catch (exp) {
+    //   console.log(exp.message);
+    // }
+    // .then((result) => {
+    //   //let responseJson = result;
+    //   //outputResult = result;
+    //   //console.log(result);
+    //   //return result;
+    //   // if (responseJson) {
+    //   //   setIssueList({
+    //   //     issues: responseJson,
+    //   //     //loading: false,
+    //   //   });
+    //   // }
+    // });
+    //console.log(outputResult);
+    //return outputResult;
+  }
 
   function renderAllIssues() {
     //console.log("All issues");

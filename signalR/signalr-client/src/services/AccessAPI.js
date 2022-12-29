@@ -1,4 +1,4 @@
-import { BASE_URL } from "./Settings";
+import { BASE_URL } from "../utils/Settings";
 
 export function getData(endPoint) {
   // payload
