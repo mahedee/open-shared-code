@@ -11,6 +11,7 @@ var builder = WebApplication.CreateBuilder(args);
 // Add services to the container.
 builder.Services.AddDbContext<SignalRContext>(opt => opt.UseInMemoryDatabase("SignalRDB"));
 
+// Add signalR
 builder.Services.AddSignalR();
 builder.Services.AddControllers();
 
@@ -29,6 +30,8 @@ if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
     app.UseSwaggerUI();
+
+    // Enable CORS
     app.UseCors(x => x
     .AllowAnyMethod()
     .AllowAnyHeader()
