@@ -4,8 +4,10 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.SignalR;
 using Microsoft.EntityFrameworkCore;
 using SingnalR.API.Db;
+using SingnalR.API.HubConfig;
 using SingnalR.API.Model;
 
 namespace SingnalR.API.Controllers
@@ -15,10 +17,12 @@ namespace SingnalR.API.Controllers
     public class IssuesController : ControllerBase
     {
         private readonly SignalRContext _context;
+        private readonly IHubContext<SignalrHub> _hubContext;
 
-        public IssuesController(SignalRContext context)
+        public IssuesController(SignalRContext context, IHubContext<SignalrHub> hubContext)
         {
             _context = context;
+            this._hubContext = hubContext;
         }
 
         // GET: api/Issues
@@ -81,7 +85,28 @@ namespace SingnalR.API.Controllers
             _context.Issues.Add(issue);
             await _context.SaveChangesAsync();
 
+            try
+            {
+                var user = "maidul";
+               
+                // if save successfully...
+                if (issue != null)
+                {
+                    // sendasync (key, value) 
+                    await _hubContext.Clients.Group($"user_{user}").SendAsync("SuccessMessage", "Issue created sucessfully");
+                }
+                await Task.CompletedTask;
+            }
+            catch (Exception ex)
+            {
+                //_logger.LogError($"Error: {ex.Message}");
+                throw new Exception(ex.Message);
+            }
+
+
             return CreatedAtAction("GetIssue", new { id = issue.Id }, issue);
+
+
         }
 
         // DELETE: api/Issues/5

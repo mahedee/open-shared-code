@@ -7,6 +7,7 @@ import React, { useEffect, useState } from "react";
 import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import Navigation from "./components/Navigation";
+import { ErrorToastify, SuccessToastify } from "./Helpers/ToastifyMessage";
 import Routers from "./Routers";
 
 function App() {
@@ -14,6 +15,8 @@ function App() {
   const [successMessage, setSuccessMessage] = useState();
   const [connectionId, setConnectionId] = useState("");
   const [newMessage, setNewMessage] = useState("");
+  const [userId, setUserId] = useState("");
+  const [errorMessage, setErrorMessage] = useState();
 
   //const {newMessage, events} = Connector();
 
@@ -30,10 +33,10 @@ function App() {
 
   // only on load fire
   useEffect(() => {
-    const _userName = "mahedee";
+    const _userName = "maidul";
     const socketConnection = new HubConnectionBuilder()
       .configureLogging(LogLevel.Debug)
-      .withUrl("https://localhost:7154/hub", {
+      .withUrl(`https://localhost:7154/hub?username=${_userName}`, {
         skipNegotiation: true,
         transport: HttpTransportType.WebSockets,
       })
@@ -44,38 +47,38 @@ function App() {
     console.log("socket connection set");
   }, []);
 
-  useEffect(() => {
-    console.log("New Message: " + newMessage);
-    console.log(connection);
-    if (connection) {
-      connection.send("newMessage", "mahedee", newMessage);
-    }
+  // useEffect(() => {
+  //   console.log("New Message: " + newMessage);
+  //   console.log(connection);
+  //   if (connection) {
+  //     connection.send("newMessage", "mahedee", newMessage);
+  //   }
 
-    // if (connection) {
-    //   connection.start()
-    //     .then(() => {
-    //       console.log("connection started!");
-    //       console.log(connection);
-    //       connection.send("newMessage", "mahedee", newMessage).then(x => console.log("sent"))
-    //      //connection.send("newMessage", "test msg");
+  //   // if (connection) {
+  //   //   connection.start()
+  //   //     .then(() => {
+  //   //       console.log("connection started!");
+  //   //       console.log(connection);
+  //   //       connection.send("newMessage", "mahedee", newMessage).then(x => console.log("sent"))
+  //   //      //connection.send("newMessage", "test msg");
 
-    //       // connection.invoke("GetConnectionId").then((res) => {
-    //       //   console.log("Connection Id", res);
-    //       //   setConnectionId(res);
-    //       // });
+  //   //       // connection.invoke("GetConnectionId").then((res) => {
+  //   //       //   console.log("Connection Id", res);
+  //   //       //   setConnectionId(res);
+  //   //       // });
 
-    //       // for sucess message
-    //       // connection.on("messageReceived", (user, message) => {
-    //       //   toast(message);
-    //       //   //setSuccessMessage(message);
+  //   //       // for sucess message
+  //   //       // connection.on("messageReceived", (user, message) => {
+  //   //       //   toast(message);
+  //   //       //   //setSuccessMessage(message);
 
-    //       // });
-    //     })
-    //     .catch((err) => {
-    //       console.log("Error: ", err);
-    //     });
-    // }
-  }, [newMessage]);
+  //   //       // });
+  //   //     })
+  //   //     .catch((err) => {
+  //   //       console.log("Error: ", err);
+  //   //     });
+  //   // }
+  // }, [newMessage]);
 
   // onload fire
 
@@ -87,20 +90,32 @@ function App() {
       connection
         .start()
         .then(() => {
-          console.log("connection started!");
-          console.log(connection);
-          //connection.send("newMessage", "foo", "test msg").then(x => console.log("sent"))
-          //connection.send("newMessage", "test msg");
+          connection.invoke("GetConnectionId").then((res) => {
+            console.log("Connection Id", res);
+            setConnectionId(res);
+          });
 
-          // connection.invoke("GetConnectionId").then((res) => {
-          //   console.log("Connection Id", res);
-          //   setConnectionId(res);
-          // });
+          connection.invoke("GetUserId").then((res) => {
+            console.log("User Id", res);
+            setUserId(res);
+          });
 
-          // for sucess message
-          connection.on("messageReceived", (user, message) => {
-            toast(message);
-            //setSuccessMessage(message);
+          connection.on("SuccessMessage", (message) => {
+            //debugger;
+            console.log("Message: ", message);
+            message && console.log("Message p1:", message);
+            // connection.invoke("Message", message);
+
+            message && SuccessToastify(message);
+            setSuccessMessage(message);
+          });
+
+          connection.on("ErrorMessage", (message) => {
+            message && console.log("Message p1:", message);
+            // connection.invoke("Message", message);
+
+            message && ErrorToastify(message.message);
+            setErrorMessage(message);
           });
         })
         .catch((err) => {
@@ -117,7 +132,6 @@ function App() {
       <button onClick={() => setNewMessage(new Date().toISOString())}>
         Send date{" "}
       </button>
-      <ToastContainer></ToastContainer>
     </div>
   );
 }

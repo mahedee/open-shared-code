@@ -10,3 +10,25 @@ export const InfoToastify = (message) => {
     draggable: true,
   });
 };
+
+export const SuccessToastify = (message) => {
+  toast.success(message, {
+    position: "top-right",
+    autoClose: 5500,
+    hideProgressBar: false,
+    closeOnClick: true,
+    pauseOnHover: true,
+    draggable: true,
+  });
+};
+
+export const ErrorToastify = (message) => {
+  toast.error(message, {
+    position: "top-right",
+    autoClose: 5500,
+    hideProgressBar: false,
+    closeOnClick: true,
+    pauseOnHover: true,
+    draggable: true,
+  });
+};
