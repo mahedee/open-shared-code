@@ -3,7 +3,7 @@ import logo from './logo.svg';
 import './App.css';
 import Connector from './signalr-connection.ts'
 
-function App() {
+function App_obsolete() {
 
 const {newMessage, events} = Connector();
 const[message, setMessage] = useState("initial value");
@@ -21,4 +21,4 @@ useEffect(()=> {
   );
 }
 
-export default App;
+export default App_obsolete;

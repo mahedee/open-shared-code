@@ -1,3 +1,30 @@
+How to run
+1. Run back end application
+* Configure SignalR in Program.cs
+* Configure signalr hub in HubConfig -> SignalRHub.cs
+* Send notification to hub in IssueController - Create method - here hard coded user = maidul used 
+
+2. Run front end application
+* npm install signalR
+* SignalR configure on app.js
+* Toast container in index.js
+* issue list and create form is in components folder
+* follow ang-kyc poc
+* Route is configured in Routers.js file 
+
+
+To do 
+- Apply axios (done)
+- Apply antd (done)
+- Show list of issues in grid (done)
+- Create issue and notify using signalR (done)
+- Add token based authentication and interceptor
+- Assign issue to user 
+- Clear UI with drop down list 
+- Refactor front end application
+
+
+
 References:
 
 To read
