@@ -12,3 +12,6 @@ Ref: Auth service, interceptor
 Use axios insted
 
 npm install axios
+npm install antd
+npm uninstall antd
+npm install react-toastify

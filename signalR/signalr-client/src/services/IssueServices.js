@@ -14,3 +14,13 @@ export const getAllIssues = () => {
     throw error;
   }
 };
+
+export const PostIssue = (data) => {
+  try {
+    console.log("input data: ", data);
+    const response = axios.post(BASE_URL + "api/Issues", data);
+    return response;
+  } catch (error) {
+    return error.message;
+  }
+};

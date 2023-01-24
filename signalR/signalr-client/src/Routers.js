@@ -1,7 +1,7 @@
 import React from "react";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import Contact from "./components/Contact";
-import CreateIssue from "./components/Issue/CreateIssue";
+import CreateIssueForm from "./components/Issue/CreateIssueForm";
 import Issues from "./components/Issue/Issues";
 import Navigation from "./components/Navigation";
 //import contact from "./components/Contact";
@@ -17,7 +17,7 @@ const Routers = () => {
           <Route path="/issues" element={<Issues></Issues>}></Route>
           <Route
             path="/createIssue"
-            element={<CreateIssue></CreateIssue>}
+            element={<CreateIssueForm></CreateIssueForm>}
           ></Route>
         </Routes>
       </BrowserRouter>
