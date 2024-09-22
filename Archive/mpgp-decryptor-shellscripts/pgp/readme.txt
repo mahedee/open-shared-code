@@ -1,0 +1,1 @@
+- corrupt file move to bad-files not decrypted files 
